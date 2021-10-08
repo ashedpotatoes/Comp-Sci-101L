@@ -1,0 +1,111 @@
+#CS101L-WEEK4_ASSIGNMENT4-SLOTMACHINE
+
+import random 
+global spin_counter
+spin_counter = 0
+
+def play_again():
+  global play
+  asking = True
+  while asking:
+    play = input("Do you want to play again ==> ")
+    if play.upper() == 'Y' or play.upper() == 'YES':
+      return True
+      break
+    if play.upper() == 'N' or play.upper() == 'NO':
+      return False
+      break
+    else:
+      print("You must enter Y/YES/N/NO to continue")
+
+def get_wager(bank):
+  valid = True
+  global wager
+  while valid:
+    wager = int(input("How many chips do you want to wager? ==> "))
+    if 0 < wager <= bank:
+      return wager
+      break
+    if wager > bank or wager < 0:
+      print("Please enter a number greater than 0 or less than your current bank total")
+
+def get_bank():
+  # just asks how much they want to start w
+  global bank 
+  bank = int(input("How many chips do you want to start with? ==> "))
+  banking = True
+  while banking:
+  # like only 101 
+    if bank < 101 and bank > 0:
+      return bank
+      break
+    elif bank > 101:
+      print("The number must be below 100")
+    elif 0 > bank:
+      print("The amount must be greater than 0. Please enter again.")
+    bank = int(input("How many chips do you want to start with? ==> "))
+
+def get_slot_results():
+  rand1 = random.randint(1,10)
+  rand2 = random.randint(1,10)
+  rand3 = random.randint(1,10)
+  return rand1, rand2, rand3
+  
+def get_matches(reela, reelb, reelc):
+  global match_counter 
+  match_counter = 0
+  if reela == reelb:
+    match_counter += 1
+  if reela == reelc:
+    match_counter += 1
+  if reelb == reelc:
+    match_counter += 1
+  if match_counter == 2:
+    return 3
+  elif match_counter ==1:
+    return 2
+  else:
+    return 0
+
+def get_payout(wager, matches):
+  global payout
+  payout = 0
+  if matches == 3:
+    payout = 10*wager - wager
+  elif matches == 2:
+    payout = (3 * wager) - wager
+  else:
+    payout = 0 - wager
+  return payout
+
+#functions here
+__name__ == "__main__"
+# everything else/ main code here
+bank = get_bank()
+most_chips = []
+most_chips.append(bank)
+playing = True
+while playing:
+  wager = get_wager(bank)
+  spin_counter += 1
+  t = get_slot_results()
+  hm = ' '.join(map(str, (t[0], t[1], t[2])))
+  print("Your spin:" , hm)
+  matches = get_matches(t[0], t[1], t[2])
+  print("You matched", matches)
+  print("You won/lost", get_payout(wager, matches))
+  global currentbank
+  currentbank = 0
+  if payout > 0:
+    bank += wager
+  if payout < 0:
+    bank-= wager
+  print("Current bank", bank)
+  most_chips.append(bank)
+  if bank <=0:
+    print("You lost all", random.randint(), "in", spin_counter, "spins")
+    print("The most chips you had was", max(most_chips))
+    play_again()
+  if play_again() == False:
+    break
+  print()
