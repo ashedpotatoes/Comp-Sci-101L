@@ -103,7 +103,7 @@ while playing:
   print("Current bank", bank)
   most_chips.append(bank)
   if bank <=0:
-    print("You lost all", random.randint(), "in", spin_counter, "spins")
+    print("You lost all", random.randint(1,10), "in", spin_counter, "spins")
     print("The most chips you had was", max(most_chips))
     play_again()
   if play_again() == False:
