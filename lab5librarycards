@@ -1,0 +1,116 @@
+########################################################################
+##
+## CS 101 Lab
+## Program #Lab5, Linda Hall Library Cards
+## Name: Ashton Weeks
+## Email: awy9n@umsystem.edu
+##
+## PROBLEM : Checking the validity of user-entered library cards-- approving them or providing reasons as to why their card number is invalid. 
+##
+## ALGORITHM :
+
+import string 
+def get_school(userstring):
+  if(userstring[5] == '1'):
+    return "School of Computing and Engineering SCE"
+  elif(userstring[5]== '2'):
+    return "School of Law"
+  elif(userstring[5] == '3'):
+    return "College of Arts and Sciences"
+  else:
+    return "Invalid School"
+
+def get_grade(userstring):
+  if(userstring[6] == '1'):
+    return "Freshman"
+  elif(userstring[6]== '2'):
+    return "Sophomore"
+  elif(userstring[6] == '3'):
+    return "Junior"
+  elif(userstring[6] == '4'):
+    return "Senior"
+  else:
+    return "Invalid Grade"
+
+def character_value(chara):
+  global test
+  test = int(string.ascii_uppercase.index(chara))
+  return test
+
+def get_check_digit(userstring):
+  userlist = list(userstring)
+  thesum = 0
+  for ele in userlist[0:5]:
+    thesum+= ((userlist.index(ele) + 1) * character_value(ele))
+  for ele in userlist[5:9]:
+    thesum+= (userlist.index(ele) + 1) * int(ele)
+  check = thesum%10
+  return check
+
+def verify_check_digit(userstring):
+  global valid
+  valid = True
+  global errormessage
+  errormessage = '' 
+  if len(userstring) != 10:
+    errormessage = 'The length of the number given must be 10'
+    valid = False
+    return valid, errormessage
+    
+  for i in range(5):
+    if userstring[i] < 'A' or userstring[i] > 'Z':
+      errormessage = "The first 5 characters must be A-Z, the invalid character is at index " + str(i) +" is " + userstring[i]
+    return (False, errormessage)
+
+  for i in range(7,10):
+    if userstring[i] < '0' or userstring[i] > '9':
+      errormessage = "The last 3 characters must be 0-9, the invalid character is at index " + str(i) +" is " + userstring[i]
+    return (False, errormessage)
+
+  var = userstring[5]
+  if var != '1' and var != '2' and var != '3':
+    valid = False
+    errormessage = 'The sixth character must be 1 2 or 3'
+    return valid, errormessage
+    
+  var2 = userstring[6]
+  if var2 != '1' and var2 != '2' and var2 != '3' and var2 != '4':
+    valid = False
+    errormessage = 'The seventh character must be 1 2 3 or 4'
+    return valid, errormessage
+    
+  calculated_value = get_check_digit(userstring)
+  given_value = int(userstring[9])
+  if given_value != calculated_value:
+    errormessage = "Check digit " + str(given_value) + " does not match calculated value " + str(calculated_value) + "."
+    return (False, errormessage)
+  return valid, errormessage
+
+__name__ == "__main__"
+print('{:^55}'.format("Linda Hall"))
+print('{:^55}'.format("Library Card Check"))
+print('='*60)
+calculating = True
+while calculating:
+  print()
+  usercard = input("Enter library card. Hit Enter to exit ==> ")
+  if usercard == "":
+    calculating = False
+    break
+  test = verify_check_digit(usercard)
+  if test[0] == True:
+    print("Library card is valid")
+    print("The card belongs to a student in", get_school(usercard))
+    print("the card belongs to a", get_grade(usercard))
+  if test[0] == False:
+    print("Library card is invalid")
+    message = verify_check_digit(usercard)
+    print(message[1])
+ 
+## ERROR HANDLING:
+## I used strings when checking the values of indices because that was how the parameter was passed
+## OTHER COMMENTS:
+## I used formatting in order to center Linda Hall and Library Card Check-- I eyeballed the numbers and made it look pretty so apologies if it's actually off
+## I updated error message as it went along and made them global so I could pass them as a tuple later too 
+## I spliced the string in half in the get check digits because some were initially alphabet characters and others were integers disguised as strings, so I seperated those values
+## and if the string is valid then they'll pass perfectly, which was what we were checking
