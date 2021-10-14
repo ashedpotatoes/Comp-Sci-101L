@@ -38,6 +38,7 @@ def character_value(chara):
   return test
 
 def get_check_digit(userstring):
+  global userlist
   userlist = list(userstring)
   thesum = 0
   for ele in userlist[0:5]:
@@ -56,34 +57,40 @@ def verify_check_digit(userstring):
     errormessage = 'The length of the number given must be 10'
     valid = False
     return valid, errormessage
-    
+
   for i in range(5):
     if userstring[i] < 'A' or userstring[i] > 'Z':
       errormessage = "The first 5 characters must be A-Z, the invalid character is at index " + str(i) +" is " + userstring[i]
-    return (False, errormessage)
+      valid = False
+    return (valid, errormessage)
 
   for i in range(7,10):
     if userstring[i] < '0' or userstring[i] > '9':
       errormessage = "The last 3 characters must be 0-9, the invalid character is at index " + str(i) +" is " + userstring[i]
-    return (False, errormessage)
+      valid = False
+    return (valid, errormessage)
 
   var = userstring[5]
   if var != '1' and var != '2' and var != '3':
     valid = False
     errormessage = 'The sixth character must be 1 2 or 3'
     return valid, errormessage
-    
   var2 = userstring[6]
   if var2 != '1' and var2 != '2' and var2 != '3' and var2 != '4':
     valid = False
     errormessage = 'The seventh character must be 1 2 3 or 4'
     return valid, errormessage
-    
-  calculated_value = get_check_digit(userstring)
-  given_value = int(userstring[9])
-  if given_value != calculated_value:
-    errormessage = "Check digit " + str(given_value) + " does not match calculated value " + str(calculated_value) + "."
-    return (False, errormessage)
+
+  given = userlist[9]
+  calculated_value = (userlist.index(given) + 1) * character_value(given)
+  if calculated_value != given:
+    errormessage = "Check digit " + given + " does not match calculated value " + calculated_value + "."
+    valid = False
+    return (valid, errormessage)
+  if given != calculated_value:
+    errormessage = "Check digit " + str(given) + " does not match calculated value " + str(calculated_value) + "."
+    valid = False
+    return valid ,errormessage
   return valid, errormessage
 
 __name__ == "__main__"
@@ -104,8 +111,8 @@ while calculating:
     print("the card belongs to a", get_grade(usercard))
   if test[0] == False:
     print("Library card is invalid")
-    message = verify_check_digit(usercard)
-    print(message[1])
+    print(test[1])
+
  
 ## ERROR HANDLING:
 ## I used strings when checking the values of indices because that was how the parameter was passed
