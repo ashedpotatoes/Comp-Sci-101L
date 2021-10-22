@@ -1,0 +1,54 @@
+# Ashton Weeks
+# awy9n@umsystem.edu
+# CS101 Labs, Caesar Cipher, Week 6
+## ALGORITHM: 
+# This program takes a string from a user and how much they wanted the string to be shifted, then it either goes to the right (encrypt to a new message) or goes to the left (decrypts to the original message)
+# in order to achieve this i made a function that takes two parameters -- text and shift, the function makes a list out of the message and shifts each character individually, then joins them back together to a singular string, which is what the function returns 
+# in the main portion, i have two loops -- one to keep the program running and another to ensure that the user enters a valid option. if not, then the program prints the menu again.
+# the program calculates the value of the character then moves based on the shift, the value is either added or subtracted based on whether or not the user is encoding or decoding the message
+# in the decoding function the shift is negative so that way it can return to its original state
+# also as per the test cases in the instructions -- the string is outputted to be uppercase 
+
+import string
+def caesar(text, shift): 
+  string.ascii_lowercase
+  string.ascii_uppercase
+  to_shift = list(text)
+  new = []
+  for chara in to_shift:
+    if chara == ' ':
+      new.append(' ')
+    if chara != ' ':
+      ch_new = chr(ord(chara) + shift)
+      new.append(ch_new)
+  renew = "".join(new)
+  return renew
+
+__name__ = "__main__"
+shifting = True
+while shifting:
+  menu = True
+  while menu:
+    print("Welcome to Caesar Cipher!")
+    print("1) Encode a string")
+    print("2) Decode a string")
+    print("Q) Quit")
+    menuchoice = input("Enter your selection ==> ") 
+    if menuchoice.upper() == 'Q':
+      shifting = False
+      menu = False
+      break
+    if menuchoice == '1':
+      usertext = input("Enter (brief) text to encrypt: ")
+      usershift = int(input("Enter the amount to shift letters by : "))
+      newstring = caesar(usertext, usershift)
+      print("Encrypted: ", newstring.upper())
+    if menuchoice == '2':
+      usertext = input("Enter (brief) text to decrypt: ")
+      usershift = int(input("Enter the number to shift letters by: "))
+      test_shift = usershift * -1
+      newstring = caesar(usertext, test_shift)
+      print("Decoded: ", newstring.upper())
+    print()
+
+# program fixes: i added a catch for spaces so that way they don't shift into any other special characters
