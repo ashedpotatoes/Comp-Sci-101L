@@ -1,0 +1,51 @@
+# Ashton Weeks
+# awy9n@umsystem.edu
+# Week 8 - Files, Errors & Exception Handling
+# ALGORITHM: Asks user for the desired fuel economy then sorts through a file containing types of cars
+# Prints out makes, models, and year, as well as the desired mpg
+asking = True
+while asking: 
+    global minimpg
+    minimpg = float(input("Enter the minimum mpg ==> "))
+    if 0 < minimpg <=100:
+        break
+    elif minimpg < 0:
+        print("Fuel economy given must be greater than 0")
+    elif minimpg > 100:
+        print("Fuel economy must be less than 100")
+    else:
+        print("You must enter a number for the fuel economy")
+
+while True:
+  userfile = input("Enter the name of the input vehicle file ==> ")
+  file = open(userfile, 'r')
+  try:
+    lines = file.readlines()
+    del lines[0]
+    break
+  except FileNotFoundError:
+    print("Could not open file", userfile)
+    pass
+  finally:
+    file.close()
+
+while True:
+  outfile = input("Enter the name of the file to output to ==> ")
+  file2 = open(outfile, 'a')
+  try:
+    for line in lines:
+      new = line.split('\t')
+      floa = float(new[7])
+      if floa > minimpg:
+        file2.write('{:<40}{:<40}{:<40}{:^10.3f}'.format(new[0], new[1], new[2], floa)) 
+    break
+  except ValueError:
+    print("Could not convert value value for", new[0], new[1], new[2])
+  except FileNotFoundError:
+      print("There is an IO Error", outfile)
+      pass
+  finally:
+    file2.close()
+
+# SPECIAL ERROR HANDLING: i read the lines in one try case and then iterated it through another, the first one reads the lines so it can get passed below whenever the programming is outputting it to a different file, largely due in part that one file is set to 'read' and the other is for append/ write 
+# i also converted the total mpg to a float for comparison's sake and to format it to 3 decimal places
