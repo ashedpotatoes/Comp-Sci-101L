@@ -41,7 +41,7 @@ while True:
     break
   except ValueError:
     print("Could not convert value value for", new[0], new[1], new[2])
-  except FileNotFoundError:
+  except (IOError, FileNotFoundError):
       print("There is an IO Error", outfile)
       pass
   finally:
