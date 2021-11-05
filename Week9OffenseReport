@@ -1,6 +1,10 @@
 # Ashton Weeks
 # awy9n@umsystem.edu
-# The main program takes in data from a crime collection report. This program imports csv then it reads the content and adds them to a list, which it returns. That list is the basis for every other function, I added the values to a seperate list then filtered values into a different dictionary which those functions return. In the main program, the user is asked to input a file, and it's in a loop so it won't continue unless the input is valid. I used try, raise, and excepts so the program would keep running even when the value was not found. Then I found the max of those dictionaries, then got the keys from the main function in order to satisfy the print statements. From there I asked for an offense, using errors again, then outputted then. 
+# The main program takes in data from a crime collection report. This program imports csv then it reads the content and adds them to a list, 
+#which it returns. That list is the basis for every other function, I added the values to a seperate list then filtered values into a different dictionary which those functions
+#return. In the main program, the user is asked to input a file, and it's in a loop so it won't continue unless the input is valid. I used try, raise, and excepts so the
+#program would keep running even when the value was not found. Then I found the max of those dictionaries, then got the keys from the main function in order to satisfy the
+#print statements. From there I asked for an offense, using errors again, then outputted then. 
 import csv
 
 def month_from_number(num):
