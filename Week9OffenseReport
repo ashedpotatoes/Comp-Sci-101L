@@ -66,6 +66,25 @@ def create_offense_dict(lista):
       key_count[key] = 1
   return key_count
 
+def create_offense_by_zip(clist):
+  try:
+    def count_per_line(l):
+      zip_count = {}
+      try:
+        zip_count[l[13]] += 1
+      except KeyError:
+        zip_count[l[13]] = 1
+      return zip_count
+    listtest = []
+    newt = []
+    for i in clist[1:]:
+      listtest.append(i[7])
+      newt.append(count_per_line(i))
+    newdict = dict(zip(listtest, newt))
+    return newdict
+  except (ValueError, IndexError):
+    pass
+
 ___name___ = "___main___"
 while True:
   try:
@@ -87,3 +106,26 @@ offensevals = offenses.values()
 highest_offense = max(offensevals)
 offense_key = max(offenses, key=offenses.get)
 print("The offense with the highest # of crimes is", offense_key , "with", highest_offense,"offenses")
+
+
+while True:
+  try:
+    felony = input("Enter an offense ==> ")
+    testagain = read_in_file(file)
+    check = create_offense_by_zip(testagain)
+    if felony in check.keys():
+      break
+    else:
+      raise ValueError
+  except ValueError:
+    print("Not a valid offense found, please try again")
+print()
+print( felony, "offenses by Zip Code")
+okay = read_in_file('CrimeDataSmall.csv')
+check = create_offense_by_zip(okay)
+print("{:<15}{:>15}".format("Zip Code", "# Offenses"))
+print('=' * 35)
+for offense, zipcode in check.items():
+  for key in zipcode:
+    if offense == felony:
+      print('{:<9}{:>12}'.format(key, zipcode[key]))
