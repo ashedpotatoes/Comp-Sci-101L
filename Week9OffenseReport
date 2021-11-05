@@ -1,0 +1,89 @@
+# Ashton Weeks
+# awy9n@umsystem.edu
+# The main program takes in data from a crime collection report. This program imports csv then it reads the content and adds them to a list, which it returns. That list is the basis for every other function, I added the values to a seperate list then filtered values into a different dictionary which those functions return. In the main program, the user is asked to input a file, and it's in a loop so it won't continue unless the input is valid. I used try, raise, and excepts so the program would keep running even when the value was not found. Then I found the max of those dictionaries, then got the keys from the main function in order to satisfy the print statements. From there I asked for an offense, using errors again, then outputted then. 
+import csv
+
+def month_from_number(num):
+  try:
+    if num > 12 or num < 0:
+      raise ValueError
+    num -=1
+    months_list = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    return (months_list[num])
+  except ValueError:
+    print("Months must be between 1-12")
+
+def read_in_file(filename):
+  file = open(filename, encoding = 'utf-8')
+  csvfile = csv.reader(file)
+  list_of_lines = []
+  for line in csvfile:
+    list_of_lines.append(line)
+  file.close()
+  return list_of_lines
+
+def create_reported_month_dict(lista):
+  alist = []
+  for i in lista:
+    alist.append(i[1])
+  del alist[0]
+  listmonth = []
+  for p in alist:
+    month = alist[0][0:2]
+    months = int(month)% 13
+    listmonth.append(int(months))
+  key_count = {}
+  for key in listmonth:
+    try:
+      key_count[key] += 1
+    except KeyError:
+      key_count[key] = 1
+  return key_count
+
+def create_reported_date_dict(lista):
+  alist = []
+  for i in lista:
+    alist.append(i[1])
+  del alist[0]
+  key_count = {}
+  for key in alist:
+    try:
+      key_count[key] += 1
+    except KeyError:
+      key_count[key] = 1
+  return key_count
+
+def create_offense_dict(lista):
+  alist = []
+  for i in lista:
+    alist.append(i[7])
+  del alist[0]
+  key_count = {}
+  for key in alist:
+    try:
+      key_count[key] += 1
+    except KeyError:
+      key_count[key] = 1
+  return key_count
+
+___name___ = "___main___"
+while True:
+  try:
+    file = input("Enter the name of the crime data file ==> ")
+    read_in_file(file)
+    break
+  except FileNotFoundError:
+    print("Could not find the file specified.", file, "not found")
+  
+lists = read_in_file(file)
+months = create_reported_month_dict(lists)
+values = months.values()
+maxval = max(values)
+max_key = max(months, key=months.get)
+the_month = month_from_number(max_key)
+print("The month with the highest # of crimes is", the_month, "with", maxval, "offenses")
+offenses = create_offense_dict(lists)
+offensevals = offenses.values()
+highest_offense = max(offensevals)
+offense_key = max(offenses, key=offenses.get)
+print("The offense with the highest # of crimes is", offense_key , "with", highest_offense,"offenses")
