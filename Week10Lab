@@ -5,6 +5,7 @@
 # the contents and output the values. 
 # this lab was reminiscent of something we did in class -- so the framework for clean_words and frequency was from that activity, so
 # credits to Dr. Gladbach 
+# NOTE: result photo for code is in wiki under the week 10 side bar 
 
 def read_in_file(file):
   with open(file, 'r') as file:
