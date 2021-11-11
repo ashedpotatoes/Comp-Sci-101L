@@ -1,0 +1,77 @@
+# ashton weeks
+# awy9n@umsystem.edu
+# ALGORITHM: this program reads in a text file given by the user . it counts how many times each word is said and how many words are
+# said only once. it reads lines and puts the frequencies into the dictionary, then i converted them into a list to sort through
+# the contents and output the values. 
+# this lab was reminiscent of something we did in class -- so the framework for clean_words and frequency was from that activity, so
+# credits to Dr. Gladbach 
+
+def read_in_file(file):
+  with open(file, 'r') as file:
+    f = file.read()
+  return f
+
+def clean_words(lines_from_file):
+  lines = lines_from_file.lower()
+  punctuation = '.\'\",;:!@#$%^&*()[]{}-'
+  for ch in punctuation:
+    lines = lines.replace(ch, ' ')
+  clean_lines = lines.split()
+  return clean_lines
+
+def frequency(lines_from_file):
+  frequency = {}
+  for words in lines_from_file:
+    if words in frequency:
+      frequency[words] += 1
+    elif len(words) > 3:
+      frequency[words] = 1
+  return frequency
+
+def top_ten_words(freq_dict):
+  list_words = []
+  for keys, values in freq_dict.items():
+    list_words.append([keys, values])
+  def sort(alist):
+    return (sorted(alist, key = lambda x: x[1]))
+  sortedlist = sort(list_words)
+  ten = sortedlist[-10:]
+  return ten
+
+def unique_words(freq_dict):
+  uniquewords = 0
+  otherwords = 0
+  for values in freq_dict.values():
+    if values == 1:
+      uniquewords += 1
+      otherwords += 1
+    else:
+      otherwords += 1
+  return [otherwords, uniquewords]
+
+__name__ = "__main__"
+while True:
+  try:
+    filename = input("Enter the name of the file to open ")
+    read_in_file(filename)
+    break
+  except FileNotFoundError:
+    print("Please enter a valid file")
+print()
+userfile = read_in_file(filename)
+cleaned = clean_words(userfile)
+freq_d = frequency(cleaned)
+a = top_ten_words(freq_d)[::-1]
+print("Most Frequently Used Words")
+print('{:<10}{:<15}{:>5}'.format("#", "Word", "Freq."))
+print("=" * 30)
+for i in range(len(a)):
+  print('{:<10}{:<15}{:>5}'.format(i + 1, a[i][0], a[i][1]))
+unique = unique_words(freq_d)
+print()
+print("There are", unique[1], "words that appear only once")
+print("There are", unique[0], "unique words in the document")
+
+# SPECIAL NOTES AND ERROR HANDLING:
+# i added the try and except error block for the file in the main program so the user could enter a filename
+# until they got the right one, so that way a valid file got run through the program.
